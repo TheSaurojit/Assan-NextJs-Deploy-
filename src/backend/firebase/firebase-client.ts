@@ -6,15 +6,7 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 
-// const firebaseConfig = {
-//   apiKey: "AIzaSyCIlSRlfcCjafsGbywnu87F39Mk339MbIs",
-//   authDomain: "aasan-retirement.firebaseapp.com",
-//   projectId: "aasan-retirement",
-//   storageBucket: "aasan-retirement.firebasestorage.app",
-//   messagingSenderId: "940331431402",
-//   appId: "1:940331431402:web:1457110808c60ddf6aee93",
-//   measurementId: "G-FXJDW81M67"
-// };
+
 
 
 const firebaseConfig = {
