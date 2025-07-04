@@ -1,25 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { TrendingUp } from "lucide-react";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
-  // const footerExcludePaths = ["/signup", "/login"];
-
-  //  const router = useRouter();
-
-  // const url = new URL(window.location.href);
-
-  // const isAuthPage = footerExcludePaths.some((path) =>
-  //   url.pathname.startsWith(path)
-  // );
-
-  // if (isAuthPage) {
-  //   return null; // Don't render footer on auth pages
-  // }
 
   return (
     <footer className="bg-muted py-12 mt-20 border-t">
@@ -40,7 +26,7 @@ const Footer = () => {
           <ul className="space-y-2">
             <li>
               <Link
-                href="/"
+                href="/investments"
                 className="text-muted-foreground hover:text-primary transition-colors"
               >
                 Retirement Calculator
@@ -48,7 +34,7 @@ const Footer = () => {
             </li>
             <li>
               <Link
-                href="/"
+                href="/investments"
                 className="text-muted-foreground hover:text-primary transition-colors"
               >
                 SIP Calculator
@@ -56,7 +42,7 @@ const Footer = () => {
             </li>
             <li>
               <Link
-                href="/"
+                href="/investments"
                 className="text-muted-foreground hover:text-primary transition-colors"
               >
                 PPF Calculator
@@ -64,10 +50,18 @@ const Footer = () => {
             </li>
             <li>
               <Link
-                href="/"
+                href="/investments"
                 className="text-muted-foreground hover:text-primary transition-colors"
               >
                 EPF Calculator
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/investments"
+                className="text-muted-foreground hover:text-primary transition-colors"
+              >
+                HLV Calculator
               </Link>
             </li>
           </ul>

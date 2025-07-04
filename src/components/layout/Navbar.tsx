@@ -45,13 +45,6 @@ const Navbar = () => {
         <nav className="hidden md:flex flex-1 items-center justify-between">
           <div className="flex items-center space-x-4 lg:space-x-6">
             <Link
-              href="/"
-              className="flex items-center space-x-1 text-sm font-medium transition-colors hover:text-primary"
-            >
-              <Calculator className="h-4 w-4" />
-              <span>Calculators</span>
-            </Link>
-            <Link
               href="/investments"
               className="flex items-center space-x-1 text-sm font-medium transition-colors hover:text-primary"
             >
@@ -126,14 +119,6 @@ const Navbar = () => {
       {mobileMenuOpen && (
         <div className="md:hidden border-t py-4">
           <div className="container space-y-4">
-            <Link
-              href="/"
-              className="flex items-center space-x-2 py-2"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              <Calculator className="h-5 w-5" />
-              <span>Calculators</span>
-            </Link>
             <Link
               href="/investments"
               className="flex items-center space-x-2 py-2"

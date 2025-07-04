@@ -1,32 +1,47 @@
-
 import RetirementCalculator from "@/components/calculators/RetirementCalculator";
 import SipCalculator from "@/components/calculators/SipCalculator";
 import HlvCalculator from "@/components/calculators/HlvCalculator";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
+import PPFCalculator from "@/components/calculators/PpfCalculator";
+import EPFCalculator from "@/components/calculators/EpfCalculator";
 
 export default function Investments() {
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8 space-y-8">
       <div className="space-y-2">
-        <h1 className="text-3xl font-extrabold tracking-tight lg:text-4xl">Investment Tools</h1>
+        <h1 className="text-3xl font-extrabold tracking-tight lg:text-4xl">
+          Investment Tools
+        </h1>
         <p className="text-lg text-muted-foreground">
           Calculate and plan your investments with our financial tools.
         </p>
       </div>
 
       <Tabs defaultValue="retirement">
-        <TabsList className="grid w-full max-w-xl grid-cols-3">
+        <TabsList className="grid w-full max-w-xl grid-cols-5">
           <TabsTrigger value="retirement" className="relative">
             Retirement
             <div className="absolute -top-3 -right-1">
-              <Badge className="text-xs h-5 bg-amber-500 hover:bg-amber-600">AI</Badge>
-              <Badge className="text-xs h-5 ml-1 bg-blue-500 hover:bg-blue-600">New</Badge>
+              <Badge className="text-xs h-5 bg-amber-500 hover:bg-amber-600">
+                AI
+              </Badge>
+              <Badge className="text-xs h-5 ml-1 bg-blue-500 hover:bg-blue-600">
+                New
+              </Badge>
             </div>
           </TabsTrigger>
           <TabsTrigger value="sip">SIP</TabsTrigger>
           <TabsTrigger value="hlv">HLV</TabsTrigger>
+          <TabsTrigger value="ppf">PPF</TabsTrigger>
+          <TabsTrigger value="epf">EPF</TabsTrigger>
         </TabsList>
         <TabsContent value="retirement">
           <Card>
@@ -35,13 +50,14 @@ export default function Investments() {
                 <div>
                   <CardTitle>Retirement Planning</CardTitle>
                   <CardDescription>
-                    Calculate how much you need to save for a comfortable retirement.
+                    Calculate how much you need to save for a comfortable
+                    retirement.
                   </CardDescription>
                 </div>
-                <div className="flex flex-col items-end gap-1">
+                {/* <div className="flex flex-col items-end gap-1">
                   <Badge variant="outline" className="text-xs">India-Specific</Badge>
                   <span className="text-xs text-muted-foreground">AI-powered insights</span>
-                </div>
+                </div> */}
               </div>
             </CardHeader>
             <CardContent>
@@ -67,7 +83,8 @@ export default function Investments() {
             <CardHeader>
               <CardTitle>Human Life Value</CardTitle>
               <CardDescription>
-                Calculate your financial worth based on income potential and other factors.
+                Calculate your financial worth based on income potential and
+                other factors.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -75,6 +92,37 @@ export default function Investments() {
             </CardContent>
           </Card>
         </TabsContent>
+
+        <TabsContent value="ppf">
+          <Card>
+            <CardHeader>
+              <CardTitle>Public Provident Fund</CardTitle>
+              <CardDescription>
+                Calculate your financial worth based on income potential and
+                other factors.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <PPFCalculator />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="epf">
+          <Card>
+            <CardHeader>
+              <CardTitle>Employees' Provident Fund</CardTitle>
+              <CardDescription>
+                Calculate your financial worth based on income potential and
+                other factors.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <EPFCalculator />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
       </Tabs>
     </div>
   );

@@ -7,8 +7,8 @@ import Link from "next/link";
 import { toast } from "react-toastify";
 import { withAuthProvider } from "@/backend/providers/Providers";
 
- function LoginPage() {
-  const { signInWithEmail , user } = useAuth();
+function LoginPage() {
+  const { signInWithEmail, user, signInWithGoogle } = useAuth();
   const router = useRouter();
 
   const [email, setEmail] = useState("");
@@ -31,6 +31,20 @@ import { withAuthProvider } from "@/backend/providers/Providers";
       } else {
         toast.error("An error occurred during login. Please try again.");
       }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    setLoading(true);
+    try {
+      await signInWithGoogle();
+      return router.push("/"); // Redirect to dashboard after successful login
+    } catch (err: any) {
+      console.log(err);
+
+      toast.error("An error occurred during login. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -80,6 +94,17 @@ import { withAuthProvider } from "@/backend/providers/Providers";
           </button>
         </form>
 
+                <div className="text-center my-4 text-gray-500">or</div>
+
+
+        <button
+          onClick={handleGoogleLogin}
+          disabled={loading}
+          className="w-full bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition disabled:opacity-60 disabled:cursor-not-allowed"
+        >
+          {loading ? "Signing up..." : "Login with Google"}
+        </button>
+
         <p className="text-sm text-center text-gray-500 mt-4">
           Don't have an account?{" "}
           <Link href="/signup" className="text-blue-600 hover:underline">
@@ -91,4 +116,4 @@ import { withAuthProvider } from "@/backend/providers/Providers";
   );
 }
 
-export default withAuthProvider(LoginPage)
+export default withAuthProvider(LoginPage);

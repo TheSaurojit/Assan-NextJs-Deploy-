@@ -1,329 +1,289 @@
 "use client";
 
-import { useState } from "react";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
-// import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { toast } from "@/hooks/use-toast";
+import { useState, useEffect } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "../ui/card";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
+import { Button } from "../ui/button";
+import { Slider } from "../ui/slider";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../ui/tooltip";
+import { InfoIcon } from "lucide-react";
+import {
+  ResponsiveContainer,
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Legend,
+  Tooltip as RechartsTooltip,
+} from "recharts";
 
-// Define the form schema
-const formSchema = z.object({
-  age: z.coerce.number().min(18).max(80, {
-    message: "Age must be between 18 and 80",
-  }),
-  annualIncome: z.coerce.number().min(0, {
-    message: "Annual income must be a positive number",
-  }),
-  workingYearsLeft: z.coerce.number().min(0).max(60, {
-    message: "Working years left must be between 0 and 60",
-  }),
-  expenses: z.coerce.number().min(0, {
-    message: "Expenses must be a positive number",
-  }),
-  savings: z.coerce.number().min(0, {
-    message: "Savings must be a positive number",
-  }),
-  liabilities: z.coerce.number().min(0, {
-    message: "Liabilities must be a positive number",
-  }),
-});
-
-type FormValues = z.infer<typeof formSchema>;
-
-// export default function HlvCalculator() {
-//   const [showResults, setShowResults] = useState(false);
-//   const [hlvValue, setHlvValue] = useState(0);
-//   const [scores, setScores] = useState<{
-//     ageScore: number;
-//     incomeScore: number;
-//     workingYearsScore: number;
-//     savingsScore: number;
-//     liabilitiesScore: number;
-//     overallScore: number;
-//   }>({
-//     ageScore: 0,
-//     incomeScore: 0,
-//     workingYearsScore: 0,
-//     savingsScore: 0,
-//     liabilitiesScore: 0,
-//     overallScore: 0,
-//   });
-
-//   const form = useForm<FormValues>({
-//     resolver: zodResolver(formSchema),
-//     defaultValues: {
-//       age: 35,
-//       annualIncome: 500000,
-//       workingYearsLeft: 25,
-//       expenses: 300000,
-//       savings: 100000,
-//       liabilities: 200000,
-//     },
-//   });
-
-//   const onSubmit = (data: FormValues) => {
-//     // Calculate HLV
-//     const {
-//       age, 
-//       annualIncome, 
-//       workingYearsLeft,
-//       expenses,
-//       savings,
-//       liabilities
-//     } = data;
-
-//     // Calculate HLV using income replacement method
-//     // HLV = Annual Income x Working Years Left - Expenses + Savings - Liabilities
-//     const hlv = (annualIncome * workingYearsLeft) - expenses + savings - liabilities;
-//     setHlvValue(hlv);
-
-//     // Calculate scores for each parameter (scale 300-900 like CIBIL)
-//     // Age score (younger is better)
-//     const ageScore = Math.max(300, Math.min(900, 900 - ((age - 18) * 10)));
-    
-//     // Income score (higher is better)
-//     const incomeScore = Math.max(300, Math.min(900, 300 + (annualIncome / 20000)));
-    
-//     // Working years left score (more years is better)
-//     const workingYearsScore = Math.max(300, Math.min(900, 300 + (workingYearsLeft * 15)));
-    
-//     // Savings score (higher is better)
-//     const savingsScore = Math.max(300, Math.min(900, 300 + (savings / 10000)));
-    
-//     // Liabilities score (lower is better)
-//     const liabilitiesScore = Math.max(300, Math.min(900, 900 - (liabilities / 10000)));
-    
-//     // Overall score (average of all parameters)
-//     const overallScore = Math.round(
-//       (ageScore + incomeScore + workingYearsScore + savingsScore + liabilitiesScore) / 5
-//     );
-
-//     setScores({
-//       ageScore: Math.round(ageScore),
-//       incomeScore: Math.round(incomeScore),
-//       workingYearsScore: Math.round(workingYearsScore),
-//       savingsScore: Math.round(savingsScore),
-//       liabilitiesScore: Math.round(liabilitiesScore),
-//       overallScore: Math.round(overallScore),
-//     });
-
-//     setShowResults(true);
-//     toast({
-//       title: "HLV Calculation Complete",
-//       description: `Your Human Life Value is ₹${hlv.toLocaleString()}`,
-//     });
-//   };
-
-//   const getScoreColor = (score: number) => {
-//     if (score >= 750) return "text-green-600";
-//     if (score >= 650) return "text-yellow-600";
-//     if (score >= 500) return "text-orange-500";
-//     return "text-red-600";
-//   };
-
-//   const getScoreDescription = (score: number) => {
-//     if (score >= 750) return "Excellent";
-//     if (score >= 650) return "Good";
-//     if (score >= 500) return "Fair";
-//     return "Poor";
-//   };
-
-//   return (
-//     <div className="space-y-6">
-//       <Card className="calculator-card">
-//         <CardHeader>
-//           <CardTitle>Human Life Value Calculator</CardTitle>
-//           <CardDescription>
-//             Calculate your financial worth based on your income, expenses, and other factors
-//           </CardDescription>
-//         </CardHeader>
-//         <CardContent>
-//           <Form {@.form}>
-//             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-//               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-//                 <FormField
-//                   control={form.control}
-//                   name="age"
-//                   render={({ field }) => (
-//                     <FormItem>
-//                       <FormLabel>Age</FormLabel>
-//                       <FormControl>
-//                         <Input type="number" placeholder="35" {@.field} />
-//                       </FormControl>
-//                       <FormMessage />
-//                     </FormItem>
-//                   )}
-//                 />
-
-//                 <FormField
-//                   control={form.control}
-//                   name="annualIncome"
-//                   render={({ field }) => (
-//                     <FormItem>
-//                       <FormLabel>Annual Income (₹)</FormLabel>
-//                       <FormControl>
-//                         <Input type="number" placeholder="500000" {@.field} />
-//                       </FormControl>
-//                       <FormMessage />
-//                     </FormItem>
-//                   )}
-//                 />
-
-//                 <FormField
-//                   control={form.control}
-//                   name="workingYearsLeft"
-//                   render={({ field }) => (
-//                     <FormItem>
-//                       <FormLabel>Working Years Left</FormLabel>
-//                       <FormControl>
-//                         <Input type="number" placeholder="25" {@.field} />
-//                       </FormControl>
-//                       <FormMessage />
-//                     </FormItem>
-//                   )}
-//                 />
-
-//                 <FormField
-//                   control={form.control}
-//                   name="expenses"
-//                   render={({ field }) => (
-//                     <FormItem>
-//                       <FormLabel>Annual Expenses (₹)</FormLabel>
-//                       <FormControl>
-//                         <Input type="number" placeholder="300000" {@.field} />
-//                       </FormControl>
-//                       <FormMessage />
-//                     </FormItem>
-//                   )}
-//                 />
-
-//                 <FormField
-//                   control={form.control}
-//                   name="savings"
-//                   render={({ field }) => (
-//                     <FormItem>
-//                       <FormLabel>Total Savings (₹)</FormLabel>
-//                       <FormControl>
-//                         <Input type="number" placeholder="100000" {@.field} />
-//                       </FormControl>
-//                       <FormMessage />
-//                     </FormItem>
-//                   )}
-//                 />
-
-//                 <FormField
-//                   control={form.control}
-//                   name="liabilities"
-//                   render={({ field }) => (
-//                     <FormItem>
-//                       <FormLabel>Total Liabilities (₹)</FormLabel>
-//                       <FormControl>
-//                         <Input type="number" placeholder="200000" {@.field} />
-//                       </FormControl>
-//                       <FormMessage />
-//                     </FormItem>
-//                   )}
-//                 />
-//               </div>
-//               <Button type="submit" className="w-full">Calculate HLV</Button>
-//             </form>
-//           </Form>
-//         </CardContent>
-//       </Card>
-
-//       <AlertDialog open={showResults} onOpenChange={setShowResults}>
-//         <AlertDialogContent className="max-w-4xl">
-//           <AlertDialogHeader>
-//             <AlertDialogTitle>Your Human Life Value Results</AlertDialogTitle>
-//             <AlertDialogDescription>
-//               Based on your inputs, here is your calculated HLV and parameter scores.
-//             </AlertDialogDescription>
-//           </AlertDialogHeader>
-          
-//           <div className="my-4">
-//             <div className="bg-muted p-4 rounded-lg mb-4">
-//               <h3 className="text-xl font-bold mb-2">Your Human Life Value</h3>
-//               <p className="text-3xl font-bold text-primary">₹{hlvValue.toLocaleString()}</p>
-//               <p className="text-sm text-muted-foreground mt-1">
-//                 This represents your financial value based on future income potential and current financial status.
-//               </p>
-//             </div>
-
-//             <h3 className="text-lg font-semibold mb-3">Your Financial Parameter Scores</h3>
-            
-//             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-//               <div className="border rounded-lg p-3">
-//                 <div className="text-sm text-muted-foreground">Age Score</div>
-//                 <div className={`text-xl font-bold ${getScoreColor(scores.ageScore)}`}>
-//                   {scores.ageScore} - {getScoreDescription(scores.ageScore)}
-//                 </div>
-//               </div>
-              
-//               <div className="border rounded-lg p-3">
-//                 <div className="text-sm text-muted-foreground">Income Score</div>
-//                 <div className={`text-xl font-bold ${getScoreColor(scores.incomeScore)}`}>
-//                   {scores.incomeScore} - {getScoreDescription(scores.incomeScore)}
-//                 </div>
-//               </div>
-              
-//               <div className="border rounded-lg p-3">
-//                 <div className="text-sm text-muted-foreground">Working Years Score</div>
-//                 <div className={`text-xl font-bold ${getScoreColor(scores.workingYearsScore)}`}>
-//                   {scores.workingYearsScore} - {getScoreDescription(scores.workingYearsScore)}
-//                 </div>
-//               </div>
-              
-//               <div className="border rounded-lg p-3">
-//                 <div className="text-sm text-muted-foreground">Savings Score</div>
-//                 <div className={`text-xl font-bold ${getScoreColor(scores.savingsScore)}`}>
-//                   {scores.savingsScore} - {getScoreDescription(scores.savingsScore)}
-//                 </div>
-//               </div>
-              
-//               <div className="border rounded-lg p-3">
-//                 <div className="text-sm text-muted-foreground">Liabilities Score</div>
-//                 <div className={`text-xl font-bold ${getScoreColor(scores.liabilitiesScore)}`}>
-//                   {scores.liabilitiesScore} - {getScoreDescription(scores.liabilitiesScore)}
-//                 </div>
-//               </div>
-              
-//               <div className="border rounded-lg bg-muted/30 p-3">
-//                 <div className="text-sm text-muted-foreground">OVERALL SCORE</div>
-//                 <div className={`text-2xl font-bold ${getScoreColor(scores.overallScore)}`}>
-//                   {scores.overallScore} - {getScoreDescription(scores.overallScore)}
-//                 </div>
-//               </div>
-//             </div>
-            
-//             <div className="mt-4 bg-muted/30 p-4 rounded-lg">
-//               <h4 className="text-sm font-semibold mb-2">What do these scores mean?</h4>
-//               <ul className="text-sm space-y-1">
-//                 <li><span className="font-medium text-green-600">750-900:</span> Excellent financial position</li>
-//                 <li><span className="font-medium text-yellow-600">650-749:</span> Good financial health</li>
-//                 <li><span className="font-medium text-orange-500">500-649:</span> Fair financial status, room for improvement</li>
-//                 <li><span className="font-medium text-red-600">300-499:</span> Poor financial health, need significant improvements</li>
-//               </ul>
-//             </div>
-//           </div>
-
-//           <AlertDialogFooter>
-//             <AlertDialogAction>Close</AlertDialogAction>
-//           </AlertDialogFooter>
-//         </AlertDialogContent>
-//       </AlertDialog>
-//     </div>
-//   );
-// }
-
-
-export default function HlvCalculator() {
-  return (
-    <div>HlvCalculator</div>
-  )
+interface HLVYearlyData {
+  year: number;
+  income: number;
+  presentValue: number;
 }
+
+interface HLVResult {
+  totalHLV: number;
+  totalIncome: number;
+  yearlyData: HLVYearlyData[];
+}
+
+const HLVCalculator = () => {
+  const [currentAge, setCurrentAge] = useState(30);
+  const [retirementAge, setRetirementAge] = useState(60);
+  const [annualIncome, setAnnualIncome] = useState(800000);
+  const [growthRate, setGrowthRate] = useState(5);
+  const [discountRate, setDiscountRate] = useState(6);
+  const [hlvResult, setHlvResult] = useState<HLVResult | null>(null);
+
+  useEffect(() => {
+    calculateHLV();
+  }, [currentAge, retirementAge, annualIncome, growthRate, discountRate]);
+
+  const calculateHLV = () => {
+    const years = retirementAge - currentAge;
+    let totalHLV = 0;
+    let totalIncome = 0;
+    const data: HLVYearlyData[] = [];
+
+    for (let i = 1; i <= years; i++) {
+      const projectedIncome = annualIncome * Math.pow(1 + growthRate / 100, i);
+      const pv = projectedIncome / Math.pow(1 + discountRate / 100, i);
+
+      totalHLV += pv;
+      totalIncome += projectedIncome;
+
+      data.push({
+        year: i,
+        income: projectedIncome,
+        presentValue: pv,
+      });
+    }
+
+    setHlvResult({ totalHLV, totalIncome, yearlyData: data });
+  };
+
+  const formatCurrency = (amount: number) => {
+    if (amount >= 10000000) return `₹${(amount / 10000000).toFixed(2)} Cr`;
+    if (amount >= 100000) return `₹${(amount / 100000).toFixed(2)} L`;
+    return `₹${amount.toFixed(2)}`;
+  };
+
+  return (
+    <Card className="calculator-card w-full">
+      <CardHeader>
+        <CardTitle className="text-2xl font-bold text-finance-teal">
+          Human Life Value (HLV) Calculator
+        </CardTitle>
+        <CardDescription>
+          Estimate the present value of your future income potential
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="current-age">Current Age</Label>
+              <Input
+                id="current-age"
+                type="number"
+                min={18}
+                value={currentAge}
+                onChange={(e) => setCurrentAge(Number(e.target.value))}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="retirement-age">Retirement Age</Label>
+              <Input
+                id="retirement-age"
+                type="number"
+                min={currentAge + 1}
+                value={retirementAge}
+                onChange={(e) => setRetirementAge(Number(e.target.value))}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="annual-income">Current Annual Income (₹)</Label>
+              <Input
+                id="annual-income"
+                type="number"
+                value={annualIncome}
+                onChange={(e) => setAnnualIncome(Number(e.target.value))}
+              />
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label className="flex items-center">
+                Growth Rate (% p.a.)
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <InfoIcon className="h-4 w-4 ml-1 text-muted-foreground" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p className="w-64">
+                        Expected yearly increase in your income.
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+                <span className="ml-2 font-semibold">{growthRate}%</span>
+              </Label>
+              <Slider
+                min={0}
+                max={15}
+                step={0.5}
+                value={[growthRate]}
+                onValueChange={(value) => setGrowthRate(value[0])}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label className="flex items-center">
+                Discount Rate (% p.a.)
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <InfoIcon className="h-4 w-4 ml-1 text-muted-foreground" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p className="w-64">
+                        Used to calculate the present value (accounts for
+                        inflation/risk).
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+                <span className="ml-2 font-semibold">{discountRate}%</span>
+              </Label>
+              <Slider
+                min={1}
+                max={15}
+                step={0.5}
+                value={[discountRate]}
+                onValueChange={(value) => setDiscountRate(value[0])}
+              />
+            </div>
+          </div>
+        </div>
+
+        {hlvResult && (
+          <div className="mt-8 space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Card className="stat-card">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm font-medium text-muted-foreground">
+                    Total Future Income
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold text-finance-blue">
+                    {formatCurrency(hlvResult.totalIncome)}
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="stat-card">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm font-medium text-muted-foreground">
+                    Human Life Value (Present Value)
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold text-finance-teal">
+                    {formatCurrency(hlvResult.totalHLV)}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            <div className="h-72 overflow-x-auto">
+              <div className="min-w-[700px]">
+                <ResponsiveContainer width="100%" height={288}>
+                  <AreaChart
+                    data={hlvResult.yearlyData}
+                    margin={{ top: 10, right: 20, left: 40, bottom: 0 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                    <XAxis
+                      dataKey="year"
+                      label={{
+                        value: "Years",
+                        position: "insideBottomRight",
+                        offset: -10,
+                      }}
+                    />
+                    <YAxis
+                      tickFormatter={(value: number) => formatCurrency(value)}
+                      label={{
+                        value: "Amount (₹)",
+                        angle: -90,
+                        position: "insideLeft",
+                        dx: -25, // try -10 or -15, not too large
+                      }}
+                    />
+
+                    <RechartsTooltip
+                      formatter={(value: number) => [
+                        `₹${value.toLocaleString()}`,
+                        "",
+                      ]}
+                      labelFormatter={(label) => `Year ${label}`}
+                    />
+                    <Legend />
+                    <Area
+                      type="monotone"
+                      dataKey="income"
+                      name="Projected Income"
+                      stackId="1"
+                      stroke="#1e40af"
+                      fill="#1e40af40"
+                    />
+                    <Area
+                      type="monotone"
+                      dataKey="presentValue"
+                      name="Present Value"
+                      stackId="1"
+                      stroke="#0d9488"
+                      fill="#0d948840"
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          </div>
+        )}
+      </CardContent>
+      <CardFooter className="border-t pt-6">
+        <div className="text-sm text-muted-foreground">
+          <p>
+            This calculator assumes a constant income growth and discount rate
+            throughout your working years.
+          </p>
+          <p>It is intended for estimation purposes only.</p>
+        </div>
+      </CardFooter>
+    </Card>
+  );
+};
+
+export default HLVCalculator;

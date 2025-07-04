@@ -170,10 +170,10 @@ const RetirementCalculator = () => {
       </CardHeader>
       <CardContent className="space-y-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="calculator">Calculator</TabsTrigger>
             <TabsTrigger value="score">Corpus Score</TabsTrigger>
-            <TabsTrigger value="insights">AI Insights</TabsTrigger>
+            {/* <TabsTrigger value="insights">AI Insights</TabsTrigger> */}
           </TabsList>
 
           <TabsContent value="calculator" className="mt-4">
@@ -407,7 +407,7 @@ const RetirementCalculator = () => {
             )}
           </TabsContent>
 
-          <TabsContent value="insights" className="mt-4">
+          {/* <TabsContent value="insights" className="mt-4">
             {retirementResult ? (
               <RetirementInsights
                 age={age}
@@ -430,7 +430,7 @@ const RetirementCalculator = () => {
                 </Button>
               </div>
             )}
-          </TabsContent>
+          </TabsContent> */}
         </Tabs>
       </CardContent>
       <CardFooter className="border-t pt-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -444,7 +444,6 @@ const RetirementCalculator = () => {
             choices.
           </p>
         </div>
-        <Button onClick={calculateRetirement}>Recalculate</Button>
       </CardFooter>
     </Card>
   );
