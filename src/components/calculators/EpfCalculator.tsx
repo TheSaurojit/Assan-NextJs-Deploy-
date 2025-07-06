@@ -206,7 +206,8 @@ const EPFCalculator = () => {
                         value: "Amount (₹)",
                         angle: -90,
                         position: "insideLeft",
-                        dx: -10,
+                        dx: -30,
+
                       }}
                     />
                     <RechartsTooltip

@@ -12,6 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import PPFCalculator from "@/components/calculators/PpfCalculator";
 import EPFCalculator from "@/components/calculators/EpfCalculator";
+import SWPCalculator from "@/components/calculators/SwpCalculator";
 
 export default function Investments() {
   return (
@@ -26,7 +27,7 @@ export default function Investments() {
       </div>
 
       <Tabs defaultValue="retirement">
-        <TabsList className="grid w-full max-w-xl grid-cols-5">
+        <TabsList className="grid w-full max-w-xl grid-cols-3">
           <TabsTrigger value="retirement" className="relative">
             Retirement
             <div className="absolute -top-3 -right-1">
@@ -40,8 +41,6 @@ export default function Investments() {
           </TabsTrigger>
           <TabsTrigger value="sip">SIP</TabsTrigger>
           <TabsTrigger value="hlv">HLV</TabsTrigger>
-          <TabsTrigger value="ppf">PPF</TabsTrigger>
-          <TabsTrigger value="epf">EPF</TabsTrigger>
         </TabsList>
         <TabsContent value="retirement">
           <Card>
@@ -92,6 +91,16 @@ export default function Investments() {
             </CardContent>
           </Card>
         </TabsContent>
+      </Tabs>
+
+      {/* second graph */}
+
+      <Tabs defaultValue="ppf">
+        <TabsList className="grid w-full max-w-xl grid-cols-3">
+          <TabsTrigger value="ppf">PPF</TabsTrigger>
+          <TabsTrigger value="epf">EPF</TabsTrigger>
+          <TabsTrigger value="swp">SWP</TabsTrigger>
+        </TabsList>
 
         <TabsContent value="ppf">
           <Card>
@@ -123,6 +132,20 @@ export default function Investments() {
           </Card>
         </TabsContent>
 
+        <TabsContent value="swp">
+          <Card>
+            <CardHeader>
+              <CardTitle>Systematic Withdrawal Plan</CardTitle>
+              <CardDescription>
+                Calculate your financial worth based on income potential and
+                other factors.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <SWPCalculator />
+            </CardContent>
+          </Card>
+        </TabsContent>
       </Tabs>
     </div>
   );

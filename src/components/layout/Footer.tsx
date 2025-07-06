@@ -64,6 +64,14 @@ const Footer = () => {
                 HLV Calculator
               </Link>
             </li>
+            <li>
+              <Link
+                href="/investments"
+                className="text-muted-foreground hover:text-primary transition-colors"
+              >
+                SWP Calculator
+              </Link>
+            </li>
           </ul>
         </div>
 
