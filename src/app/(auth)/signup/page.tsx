@@ -133,4 +133,4 @@ import { withAuthProvider } from "@/backend/providers/Providers";
   );
 }
 
-export default withAuthProvider(SignupPage)
+export default SignupPage;

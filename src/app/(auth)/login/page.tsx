@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/backend/context/AuthContext"; // Adjust path if needed
 import Link from "next/link";
 import { toast } from "react-toastify";
-import { withAuthProvider } from "@/backend/providers/Providers";
 
 function LoginPage() {
   const { signInWithEmail, user, signInWithGoogle } = useAuth();
@@ -116,4 +115,4 @@ function LoginPage() {
   );
 }
 
-export default withAuthProvider(LoginPage);
+export default LoginPage;

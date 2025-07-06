@@ -14,7 +14,6 @@ import {
   BookAIcon,
 } from "lucide-react";
 import { useAuth } from "@/backend/context/AuthContext";
-import { withAuthProvider } from "@/backend/providers/Providers";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -180,4 +179,4 @@ const Navbar = () => {
   );
 };
 
-export default withAuthProvider(Navbar);
+export default Navbar;
