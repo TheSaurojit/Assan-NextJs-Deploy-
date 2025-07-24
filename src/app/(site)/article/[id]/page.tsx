@@ -63,10 +63,10 @@ import { ArticleView } from "@/backend/types/types";
 import { notFound } from "next/navigation";
 
 interface Props {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
-export async function fetchArticle(id: string): Promise<ArticleView | null> {
+ async function fetchArticle(id: string): Promise<ArticleView | null> {
   try {
     const docSnap = await adminDb.collection("Articles").doc(id).get();
 
@@ -80,7 +80,7 @@ export async function fetchArticle(id: string): Promise<ArticleView | null> {
 }
 
 export async function generateMetadata({ params }: Props) {
-  const id = params.id;
+  const { id } = await params;
 
   const article = await fetchArticle(id);
 
@@ -99,7 +99,7 @@ export async function generateMetadata({ params }: Props) {
 }
 
 export default async function ArticleViewPage({ params }: Props) {
-  const id = params.id;
+  const { id } = await params;
 
   const article = await fetchArticle(id);
 
@@ -128,7 +128,7 @@ export default async function ArticleViewPage({ params }: Props) {
           controls
         />
       )}
-      
+
       <div
         className="prose max-w-none"
         dangerouslySetInnerHTML={{ __html: article.content }}

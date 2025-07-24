@@ -7,7 +7,7 @@ import Link from "next/link";
 import { toast } from "react-toastify";
 
 function LoginPage() {
-  const { signInWithEmail, user, signInWithGoogle } = useAuth();
+  const { signInWithEmail, signInWithGoogle } = useAuth();
   const router = useRouter();
 
   const [email, setEmail] = useState("");
@@ -105,7 +105,7 @@ function LoginPage() {
         </button>
 
         <p className="text-sm text-center text-gray-500 mt-4">
-          Don't have an account?{" "}
+          Don't have an account?
           <Link href="/signup" className="text-blue-600 hover:underline">
             Sign up
           </Link>
