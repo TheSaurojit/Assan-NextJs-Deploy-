@@ -3,11 +3,16 @@
 import { useAuth } from "@/backend/providers/AuthProvider";
 import { FirestoreService } from "@/backend/firebase/firestoreService";
 import { ArticleCreate } from "@/backend/types/types";
-import CKEditorComponent from "@/components/editor/CKEditor";
 import { Button } from "@/components/ui/button";
 import { Timestamp } from "firebase/firestore";
 import { useRef, useState } from "react";
 import { toast } from "react-toastify";
+import dynamic from "next/dynamic";
+
+const CKEditorComponent = dynamic(() => import("@/components/editor/CKEditor"), {
+  ssr: false,
+  loading: () => <p>Loading editor...</p>,
+});
 
 export default function EditorPage() {
   const [thumbnail, setThumbnail] = useState<File | null>(null);
