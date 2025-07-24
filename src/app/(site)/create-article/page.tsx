@@ -1,6 +1,6 @@
 "use client";
 
-import { useAuth } from "@/backend/context/AuthContext";
+import { useAuth } from "@/backend/providers/AuthProvider";
 import { FirestoreService } from "@/backend/firebase/firestoreService";
 import { ArticleCreate } from "@/backend/types/types";
 import CKEditorComponent from "@/components/editor/CKEditor";

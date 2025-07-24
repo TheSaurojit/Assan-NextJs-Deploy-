@@ -15,11 +15,9 @@ export interface  User {
 // Define the context value interface
 export interface AuthContextType {
   user:   User | null;
-  loading: boolean;
   signUpWithEmail: (email: string, password: string) => Promise<UserCredential>;
   signInWithEmail: (email: string, password: string) => Promise<UserCredential>;
   signInWithGoogle: () => Promise<UserCredential>;
-  // adminSignIn: (email: string, password: string) => Promise<UserCredential>;
   signOut: () => Promise<void>;
 }
 
@@ -52,3 +50,11 @@ export interface ArticleView {
   content : string ,
   createdAt :  Timestamp
 }
+
+export interface AffiliateType {
+  id : string ,
+  link : string ,
+  thumbnail : string ,
+  createdAt :  Timestamp
+}
+

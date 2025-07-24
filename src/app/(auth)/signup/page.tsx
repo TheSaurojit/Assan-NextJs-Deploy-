@@ -2,10 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useAuth } from "@/backend/context/AuthContext";
+import { useAuth } from "@/backend/providers/AuthProvider";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-import { withAuthProvider } from "@/backend/providers/Providers";
 
  function SignupPage() {
   const [email, setEmail] = useState("");

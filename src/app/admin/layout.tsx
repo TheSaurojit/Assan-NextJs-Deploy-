@@ -1,35 +1,28 @@
 "use client";
-import React, { ReactElement, ReactNode, useEffect, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import {
   Menu,
   X,
   Home,
-  Users,
-  BarChart3,
-  Settings,
-  FileText,
-  ShoppingCart,
+  User,
   Bell,
   Search,
-  User,
   BookA,
 } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const AdminLayout = ({ children }: { children: ReactElement }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const pathname = usePathname();
 
   const navigation = [
-    { name: "Dashboard", href: "/admin", icon: Home },
-    { name: "Articles", href: "/admin/articles", icon: BookA },
-    // { name: "Analytics", href: "/admin/analytics", icon: BarChart3 },
-    // { name: "Orders", href: "/admin/orders", icon: ShoppingCart },
-    // { name: "Reports", href: "/admin/reports", icon: FileText },
-    // { name: "Settings", href: "/admin/settings", icon: Settings },
+    { name: "Dashboard", href: "", icon: Home },
+    { name: "Articles", href: "/articles", icon: BookA },
+    { name: "Affiliate Marketing", href: "/affiliate", icon: BookA },
   ];
 
   useEffect(() => {
-    // Function to update width
     const handleResize = () => {
       if (window.innerWidth > 1023) {
         setSidebarOpen(true);
@@ -38,19 +31,13 @@ const AdminLayout = ({ children }: { children: ReactElement }) => {
       }
     };
 
-    // Set initial width
     handleResize();
-
-    // Listen to resize
     window.addEventListener("resize", handleResize);
-
-    // Cleanup
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Mobile sidebar overlay */}
       {sidebarOpen && (
         <div
           className="fixed inset-0 z-40 bg-gray-400 bg-opacity-50 lg:hidden"
@@ -61,10 +48,9 @@ const AdminLayout = ({ children }: { children: ReactElement }) => {
       {/* Sidebar */}
       <div
         className={`
-        fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out
-       
-        lg:translate-x-0 lg:static lg:inset-0
-      `}
+          fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out
+          lg:translate-x-0 lg:static lg:inset-0
+        `}
         style={{
           transform: sidebarOpen ? "translateX(0)" : "translateX(-100%)",
         }}
@@ -89,20 +75,36 @@ const AdminLayout = ({ children }: { children: ReactElement }) => {
         <nav className="mt-5 flex-1 px-2 space-y-1">
           {navigation.map((item) => {
             const Icon = item.icon;
+            const fullPath = "/admin" + item.href;
+            const isActive = pathname === fullPath;
+
             return (
               <Link
                 key={item.name}
-                href={item.href}
-                className="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors duration-150"
+                href={fullPath}
+                onClick={() => {
+                  if (window.innerWidth < 1024) setSidebarOpen(false);
+                }}
+                className={`group flex items-center px-2 py-2 text-sm font-medium rounded-md transition-colors duration-150 ${
+                  isActive
+                    ? "bg-gray-100 text-blue-600 font-semibold"
+                    : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                }`}
               >
-                <Icon className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500" />
+                <Icon
+                  className={`mr-3 h-5 w-5 ${
+                    isActive
+                      ? "text-blue-500"
+                      : "text-gray-400 group-hover:text-gray-500"
+                  }`}
+                />
                 {item.name}
               </Link>
             );
           })}
         </nav>
 
-        {/* User profile section */}
+        {/* User profile */}
         <div className="flex-shrink-0 border-t border-gray-200 p-4">
           <div className="flex items-center">
             <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
@@ -118,7 +120,7 @@ const AdminLayout = ({ children }: { children: ReactElement }) => {
 
       {/* Main content */}
       <div className="lg:pl-64">
-        {/* Top navigation */}
+        {/* Top navbar */}
         <div className="sticky top-0 z-40 bg-white shadow-sm border-b border-gray-200">
           <div className="flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
             <div className="flex items-center">
@@ -130,7 +132,7 @@ const AdminLayout = ({ children }: { children: ReactElement }) => {
               </button>
             </div>
 
-            {/* Search bar */}
+            {/* Search */}
             <div className="flex-1 max-w-lg mx-4">
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -139,19 +141,17 @@ const AdminLayout = ({ children }: { children: ReactElement }) => {
                 <input
                   type="text"
                   placeholder="Search..."
-                  className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                  className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm"
                 />
               </div>
             </div>
 
             <div className="flex items-center space-x-4">
-              {/* Notifications */}
               <button className="p-2 text-gray-400 hover:text-gray-500 hover:bg-gray-100 rounded-md relative">
                 <Bell className="w-5 h-5" />
                 <span className="absolute top-1 right-1 block h-2 w-2 rounded-full bg-red-400"></span>
               </button>
 
-              {/* Profile dropdown */}
               <div className="relative">
                 <button className="flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                   <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">

@@ -12,8 +12,9 @@ import {
   TrendingUp,
   LineChart,
   BookAIcon,
+  LayoutDashboard,
 } from "lucide-react";
-import { useAuth } from "@/backend/context/AuthContext";
+import { useAuth } from "@/backend/providers/AuthProvider";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -74,6 +75,15 @@ const Navbar = () => {
               </Link>
             ) : (
               <></>
+            )}
+            {user?.role === "admin" && (
+              <Link
+                href="/admin"
+                className="flex items-center space-x-1 text-sm font-medium transition-colors hover:text-primary"
+              >
+                <LayoutDashboard className="h-4 w-4" />
+                <span>Admin Panel</span>
+              </Link>
             )}
           </div>
 
@@ -152,6 +162,15 @@ const Navbar = () => {
               </Link>
             ) : (
               <></>
+            )}
+            {user?.role === "admin" && (
+              <Link
+                href="/admin"
+                className="flex items-center space-x-1 text-sm font-medium transition-colors hover:text-primary"
+              >
+                <LayoutDashboard className="h-4 w-4" />
+                <span>Admin Panel</span>
+              </Link>
             )}
             <div className="flex flex-col space-y-2 pt-4 border-t">
               {!user ? (

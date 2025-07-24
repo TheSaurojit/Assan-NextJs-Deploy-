@@ -13,11 +13,9 @@ import {
 } from "firebase/auth";
 import { AuthContextType, User } from "../types/types";
 import { CustomError } from "../helpers/CustomError";
-import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
-  loading: true,
   signUpWithEmail: async () => {
     throw new Error("AuthProvider not found");
   },
@@ -35,7 +33,6 @@ const AuthContext = createContext<AuthContextType>({
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -52,7 +49,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
       // console.log("State change -->", user);
 
-      setLoading(false);
     });
 
 
@@ -142,7 +138,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const value: AuthContextType = {
     user,
-    loading,
     signUpWithEmail: signup,
     signInWithEmail: login,
     signInWithGoogle: googleLogin,

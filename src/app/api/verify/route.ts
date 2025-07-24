@@ -11,9 +11,6 @@ export async function POST(req : NextRequest) {
         try {
             const user = await adminAuth.verifyIdToken(token);
 
-            // console.log(user , " \nuser from routes.ts\n");
-            
-
             const docRef = adminDb.collection("Users").doc(user.uid);
             const docSnap = await docRef.get();
 
