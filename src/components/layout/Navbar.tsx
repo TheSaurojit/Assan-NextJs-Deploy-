@@ -136,14 +136,14 @@ const Navbar = () => {
               <BarChart3 className="h-5 w-5" />
               <span>Investments</span>
             </Link>
-            <Link
+            {/* <Link
               href="/stock-market"
               className="flex items-center space-x-2 py-2"
               onClick={() => setMobileMenuOpen(false)}
             >
               <LineChart className="h-5 w-5" />
               <span>Stock Market</span>
-            </Link>
+            </Link> */}
             <Link
               href="/news"
               className="flex items-center space-x-2 py-2"
